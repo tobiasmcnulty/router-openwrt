@@ -1,0 +1,57 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+    - '*' # Any tag
+
+name: Upload Release Asset
+
+jobs:
+  # https://github.com/actions/upload-release-asset#example-workflow---upload-a-release-asset
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set vars stage 1
+        run: |
+          export TAG=$(echo ${{ github.ref }} | cut -d'/' -f3)
+          echo "release=$(echo $TAG | cut -d'-' -f1)"  >> $GITHUB_ENV
+          echo "target=$(echo $TAG | cut -d'-' -f2)" >> $GITHUB_ENV
+          echo "subtarget=$(echo $TAG | cut -d'-' -f3)" >> $GITHUB_ENV
+      - name: Set vars stage 2
+        run: |
+          echo "target_dir=./builder/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
+          echo "combined_img=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> $GITHUB_ENV
+      - name: Build project
+        run: |
+          make release="${{ env.release }}" target="${{ env.target }}" subtarget="${{ env.subtarget }}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload combined image
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.combined_img }}
+          asset_name: ${{ env.combined_img }}
+          asset_content_type: application/gzip
+      - name: Upload sha256sums
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/sha256sums
+          asset_name: sha256sums
+          asset_content_type: application/gzip
