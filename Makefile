@@ -5,6 +5,26 @@ builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target
 builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
 
+build_profile = Generic
+build_packages = \
+	rsyslog \
+	luci \
+	luci-app-unbound \
+	unbound-daemon-heavy \
+	luci-app-wireguard \
+	luci-proto-wireguard \
+	python3-light \
+	python3-logging \
+	python3-ctypes \
+	libustream-openssl20150806 \
+	ca-bundle \
+	ca-certificates \
+	nmap \
+	tcpdump \
+	bwm-ng \
+	iperf \
+	screen
+
 install-deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
 	sudo apt-get update
@@ -18,3 +38,7 @@ get-builder:
 	mkdir -p builder/
 	tar -xf $(builder_filename) -C builder/ --strip-components=1
 
+build:
+	cd builder/ && make image PROFILE=$(build_profile) PACKAGES="$(build_packages)"
+	du -hs builder/bin/targets/$(target)/$(subtarget)/*
+	cat builder/bin/targets/$(target)/$(subtarget)/sha256sums
