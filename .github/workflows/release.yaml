@@ -2,7 +2,7 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    - '*' # Any tag
 
 name: Upload Release Asset
 
@@ -14,28 +14,39 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build project
+      - name: Test
         run: |
-          make install-deps
-          make get-builder
-          make build
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./builder/bin/targets/x86/64/openwrt-19.07.7-x86-64-combined-squashfs.img.gz
-          asset_name: openwrt-19.07.7-x86-64-combined-squashfs.img.gz
-          asset_content_type: application/gzip
+          export TAG=$(echo ${{ github.ref }} | cut -d'/' -f3)
+          echo $TAG
+          export RELEASE=$(echo $TAG | cut -d'-' -f1)
+          echo $RELEASE
+          export TARGET=$(echo $TAG | cut -d'-' -f2)
+          echo $TARGET
+          export SUBTARGET=$(echo $TAG | cut -d'-' -f3)
+          echo $SUBTARGET
+
+      # - name: Build project
+      #   run: |
+      #     make install-deps
+      #     make get-builder
+      #     make build
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: Release ${{ github.ref }}
+      #     draft: false
+      #     prerelease: false
+      # - name: Upload Release Asset
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./builder/bin/targets/x86/64/openwrt-19.07.7-x86-64-combined-squashfs.img.gz
+      #     asset_name: openwrt-19.07.7-x86-64-combined-squashfs.img.gz
+      #     asset_content_type: application/gzip
