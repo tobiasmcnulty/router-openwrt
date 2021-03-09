@@ -23,7 +23,7 @@ jobs:
       - name: Set vars stage 2
         run: |
           echo "target_dir=./builder/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
-          echo "combined_img=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> >> $GITHUB_ENV
+          echo "combined_img=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> $GITHUB_ENV
       - name: Build project
         run: |
           make release="${{ env.release }}" target="${{ env.target }}" subtarget="${{ env.subtarget }}"
