@@ -23,7 +23,13 @@ jobs:
       - name: Set vars stage 2
         run: |
           echo "target_dir=./builder/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
-          echo "combined_img=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> $GITHUB_ENV
+          echo "combined_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-ext4.img.gz" >> $GITHUB_ENV
+          echo "combined_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> $GITHUB_ENV
+          echo "generic_rootfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-rootfs.tar.gz" >> $GITHUB_ENV
+          echo "generic_manifest=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic.manifest" >> $GITHUB_ENV
+          echo "rootfs_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-rootfs-ext4.img.gz" >> $GITHUB_ENV
+          echo "rootfs_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-rootfs-squashfs.img.gz" >> $GITHUB_ENV
+          echo "vmlinuz=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-vmlinuz" >> $GITHUB_ENV
       - name: Build project
         run: |
           make release="${{ env.release }}" target="${{ env.target }}" subtarget="${{ env.subtarget }}"
@@ -37,15 +43,69 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload combined image
+      - name: Upload combined_ext4
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.target_dir }}/${{ env.combined_img }}
-          asset_name: ${{ env.combined_img }}
+          asset_path: ${{ env.target_dir }}/${{ env.combined_ext4 }}
+          asset_name: ${{ env.combined_ext4 }}
           asset_content_type: application/gzip
+      - name: Upload combined_squashfs
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.combined_squashfs }}
+          asset_name: ${{ env.combined_squashfs }}
+          asset_content_type: application/gzip
+      - name: Upload generic_rootfs
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.generic_rootfs }}
+          asset_name: ${{ env.generic_rootfs }}
+          asset_content_type: application/gzip
+      - name: Upload generic_manifest
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.generic_manifest }}
+          asset_name: ${{ env.generic_manifest }}
+          asset_content_type: text/plain
+      - name: Upload rootfs_ext4
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.rootfs_ext4 }}
+          asset_name: ${{ env.rootfs_ext4 }}
+          asset_content_type: application/gzip
+      - name: Upload rootfs_squashfs
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.rootfs_squashfs }}
+          asset_name: ${{ env.rootfs_squashfs }}
+          asset_content_type: application/gzip
+      - name: Upload vmlinuz
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.target_dir }}/${{ env.vmlinuz }}
+          asset_name: ${{ env.vmlinuz }}
+          asset_content_type: application/octet-stream
       - name: Upload sha256sums
         uses: actions/upload-release-asset@v1
         env:
@@ -54,4 +114,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.target_dir }}/sha256sums
           asset_name: sha256sums
-          asset_content_type: application/gzip
+          asset_content_type: text/plain
