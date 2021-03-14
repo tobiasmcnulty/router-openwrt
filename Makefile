@@ -6,7 +6,7 @@ builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
 
 build_profile = Generic
-build_packages = \
+router_packages = \
 	rsyslog \
 	luci \
 	luci-app-unbound \
@@ -23,7 +23,18 @@ build_packages = \
 	tcpdump \
 	bwm-ng \
 	iperf \
+	pciutils \
 	screen
+
+wifi_packages = \
+	hostapd \
+	iw-full \
+	iwlwifi-firmware-iwl7260 \
+	kmod-cfg80211 \
+	kmod-iwlwifi \
+	kmod-mac80211 \
+	wireless-regdb \
+	wpa-supplicant
 
 .PHONY: all
 all: install-deps get-builder build
@@ -42,6 +53,6 @@ get-builder:
 build:
 	rm -rf builder && mkdir builder/
 	tar -xf $(builder_filename) -C builder/ --strip-components=1
-	cd builder/ && make image PROFILE=$(build_profile) PACKAGES="$(build_packages)"
+	cd builder/ && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(wifi_packages)"
 	du -hs builder/bin/targets/$(target)/$(subtarget)/*
 	cat builder/bin/targets/$(target)/$(subtarget)/sha256sums
