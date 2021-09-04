@@ -9,8 +9,10 @@ build_profile = Generic
 router_packages = \
 	rsyslog \
 	luci \
+	luci-app-adblock \
 	luci-app-unbound \
 	unbound-daemon-heavy \
+	luci-app-vpn-policy-routing \
 	luci-app-wireguard \
 	luci-proto-wireguard \
 	python3-light \
