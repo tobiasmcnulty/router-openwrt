@@ -20,7 +20,7 @@ jobs:
           echo "release=$(echo $TAG | cut -d'-' -f1)"  >> $GITHUB_ENV
           echo "target=$(echo $TAG | cut -d'-' -f2)" >> $GITHUB_ENV
           echo "subtarget=$(echo $TAG | cut -d'-' -f3)" >> $GITHUB_ENV
-      - name: Set vars stage 2
+      - name: Set vars stage 2 (OpenWRT 19.x)
         run: |
           echo "target_dir=./builder-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
           echo "combined_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-ext4.img.gz" >> $GITHUB_ENV
@@ -30,6 +30,18 @@ jobs:
           echo "rootfs_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-rootfs-ext4.img.gz" >> $GITHUB_ENV
           echo "rootfs_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-rootfs-squashfs.img.gz" >> $GITHUB_ENV
           echo "vmlinuz=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-vmlinuz" >> $GITHUB_ENV
+        if: ${{ contains(github.ref, '19.') }}
+      - name: Set vars stage 2 (OpenWRT 21.x)
+        run: |
+          echo "target_dir=./builder-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
+          echo "combined_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-ext4-combined.img.gz" >> $GITHUB_ENV
+          echo "combined_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-squashfs-combined.img.gz" >> $GITHUB_ENV
+          echo "generic_rootfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-rootfs.tar.gz" >> $GITHUB_ENV
+          echo "generic_manifest=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic.manifest" >> $GITHUB_ENV
+          echo "rootfs_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-ext4-rootfs.img.gz" >> $GITHUB_ENV
+          echo "rootfs_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-squashfs-rootfs.img.gz" >> $GITHUB_ENV
+          echo "vmlinuz=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-kernel.bin" >> $GITHUB_ENV
+        if: ${{ contains(github.ref, '21.') }}
       - name: Build project
         run: |
           make release="${{ env.release }}" target="${{ env.target }}" subtarget="${{ env.subtarget }}"
