@@ -1,11 +1,28 @@
-release ?= 19.07.7
+release ?= 21.02.0
 target ?= x86
 subtarget ?= 64
 builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.xz
 builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
 
-build_profile = Generic
+# release-dependent variables
+# 21.02.0 seems to have wolfssl installed by default or as a dependency of other packages
+ifneq (,$(findstring 21.,$(release)))
+	build_profile = generic
+	release_packages = \
+		kmod-sp5100-tco \
+		libustream-wolfssl20201210 \
+		unbound-daemon
+else
+	build_profile = Generic
+	release_packages = \
+		kmod-sp5100_tco \
+		libustream-openssl20150806 \
+		unbound-daemon-heavy
+endif
+
+build_dir = builder-$(release)-$(target)-$(subtarget)-$(build_profile)
+
 router_packages = \
 	bwm-ng \
 	ca-bundle \
@@ -13,7 +30,6 @@ router_packages = \
 	ethtool \
 	iperf \
 	kmod-bonding \
-	libustream-openssl20150806 \
 	luci \
 	luci-app-adblock \
 	luci-app-openvpn \
@@ -30,8 +46,7 @@ router_packages = \
 	python3-logging \
 	rsyslog \
 	screen \
-	tcpdump \
-	unbound-daemon-heavy
+	tcpdump
 
 wifi_packages = \
 	hostapd \
@@ -42,6 +57,24 @@ wifi_packages = \
 	kmod-mac80211 \
 	wireless-regdb \
 	wpa-supplicant
+
+# See: https://openwrt.org/toh/pcengines/apu2
+# - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
+apu2_packages = \
+	kmod-leds-gpio \
+	kmod-crypto-hw-ccp \
+	kmod-gpio-nct5104d \
+	kmod-gpio-button-hotplug \
+	kmod-usb-core \
+	kmod-usb-ohci \
+	kmod-usb2 \
+	kmod-usb3 \
+	kmod-sound-core \
+	kmod-pcspkr \
+	amd64-microcode \
+	flashrom \
+	irqbalance \
+	fstrim
 
 .PHONY: all
 all: install-deps get-builder build
@@ -58,8 +91,8 @@ get-builder:
 	grep $(builder_filename) sha256sums | sha256sum --check --status
 
 build:
-	rm -rf builder && mkdir builder/
-	tar -xf $(builder_filename) -C builder/ --strip-components=1
-	cd builder/ && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(wifi_packages)"
-	du -hs builder/bin/targets/$(target)/$(subtarget)/*
-	cat builder/bin/targets/$(target)/$(subtarget)/sha256sums
+	rm -rf $(build_dir) && mkdir $(build_dir)
+	tar -xf $(builder_filename) -C $(build_dir) --strip-components=1
+	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages)"
+	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
+	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
