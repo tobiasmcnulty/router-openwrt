@@ -21,7 +21,7 @@ else
 		unbound-daemon-heavy
 endif
 
-build_dir = builder-$(release)-$(target)-$(subtarget)-$(build_profile)
+build_dir = builder-$(release)-$(target)-$(subtarget)
 
 router_packages = \
 	bwm-ng \

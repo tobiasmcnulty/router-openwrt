@@ -22,7 +22,7 @@ jobs:
           echo "subtarget=$(echo $TAG | cut -d'-' -f3)" >> $GITHUB_ENV
       - name: Set vars stage 2
         run: |
-          echo "target_dir=./builder/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
+          echo "target_dir=./builder-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
           echo "combined_ext4=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-ext4.img.gz" >> $GITHUB_ENV
           echo "combined_squashfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-combined-squashfs.img.gz" >> $GITHUB_ENV
           echo "generic_rootfs=openwrt-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}-generic-rootfs.tar.gz" >> $GITHUB_ENV
