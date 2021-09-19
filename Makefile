@@ -7,28 +7,31 @@ checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(targ
 
 build_profile = Generic
 router_packages = \
-	rsyslog \
+	bwm-ng \
+	ca-bundle \
+	ca-certificates \
+	ethtool \
+	iperf \
+	kmod-bonding \
+	libustream-openssl20150806 \
 	luci \
 	luci-app-adblock \
 	luci-app-openvpn \
 	luci-app-unbound \
-	unbound-daemon-heavy \
 	luci-app-vpn-policy-routing \
 	luci-app-wireguard \
 	luci-proto-wireguard \
+	mii-tool \
+	nmap \
 	openvpn-openssl \
+	pciutils \
+	python3-ctypes \
 	python3-light \
 	python3-logging \
-	python3-ctypes \
-	libustream-openssl20150806 \
-	ca-bundle \
-	ca-certificates \
-	nmap \
+	rsyslog \
+	screen \
 	tcpdump \
-	bwm-ng \
-	iperf \
-	pciutils \
-	screen
+	unbound-daemon-heavy
 
 wifi_packages = \
 	hostapd \
