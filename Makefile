@@ -28,12 +28,14 @@ router_packages = \
 	bwm-ng \
 	ca-bundle \
 	ca-certificates \
+	ddns-scripts \
 	diffutils \
 	ethtool \
 	iperf \
 	kmod-bonding \
 	luci \
 	luci-app-adblock \
+	luci-app-ddns \
 	luci-app-openvpn \
 	luci-app-unbound \
 	luci-app-vpn-policy-routing \
