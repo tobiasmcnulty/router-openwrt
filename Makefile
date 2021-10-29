@@ -24,9 +24,11 @@ endif
 build_dir = builder-$(release)-$(target)-$(subtarget)
 
 router_packages = \
+	apinger \
 	bwm-ng \
 	ca-bundle \
 	ca-certificates \
+	diffutils \
 	ethtool \
 	iperf \
 	kmod-bonding \
@@ -46,7 +48,8 @@ router_packages = \
 	python3-logging \
 	rsyslog \
 	screen \
-	tcpdump
+	tcpdump \
+	whois
 
 wifi_packages = \
 	hostapd \
