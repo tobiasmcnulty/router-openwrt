@@ -29,6 +29,7 @@ router_packages = \
 	bwm-ng \
 	ca-bundle \
 	ca-certificates \
+	curl \
 	ddns-scripts \
 	diffutils \
 	ethtool \
