@@ -25,6 +25,7 @@ build_dir = builder-$(release)-$(target)-$(subtarget)
 
 router_packages = \
 	apinger \
+	bind-host \
 	bwm-ng \
 	ca-bundle \
 	ca-certificates \
