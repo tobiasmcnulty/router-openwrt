@@ -24,6 +24,7 @@ endif
 build_dir = builder-$(release)-$(target)-$(subtarget)
 
 router_packages = \
+	6in4 \
 	apinger \
 	bind-host \
 	bwm-ng \
