@@ -17,7 +17,7 @@ jobs:
           git -c 'versionsort.suffix=-' ls-remote --refs --tags | grep ${LATEST_UPSTREAM}
           echo "create_tag=$?" >> $GITHUB_ENV
       - name: Create tag for x86-64
-        if: ${{ create_tag == '1' }}
+        if: ${{ env.create_tag == '1' }}
         uses: actions/github-script@v3
         with:
           github-token: ${{ github.token }}
@@ -25,6 +25,6 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ latest_upstream }}-x86-64",
+              ref: "refs/tags/${{ env.latest_upstream }}-x86-64",
               sha: context.sha
             })
