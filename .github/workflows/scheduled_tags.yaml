@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 6 * * *'
 
 name: Create tag, if needed
 
