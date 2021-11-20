@@ -1,0 +1,29 @@
+on:
+  schedule:
+    - cron: '10 13 * * *'
+
+name: Create tag, if needed
+
+jobs:
+  build:
+    name: Create tag, if needed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set vars stage 1
+        run: |
+          export LATEST_UPSTREAM=$(git -c 'versionsort.suffix=-' ls-remote --refs --tags --sort='v:refname' git://git.openwrt.org/openwrt/openwrt.git | cut -d'/' -f3 | tail -n 1)
+          echo "latest_upstreamn=${LATEST_UPSTREAM}" >> $GITHUB_ENV
+          git -c 'versionsort.suffix=-' ls-remote --refs --tags | grep ${LATEST_UPSTREAM}
+          echo "create_tag=$?" >> $GITHUB_ENV
+      - name: Create tag for x86-64
+        if: ${{ create_tag == '1' }}
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ latest_upstream }}-x86-64",
+              sha: context.sha
+            })
