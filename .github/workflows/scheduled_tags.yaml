@@ -10,6 +10,8 @@ jobs:
     name: Create tag, if needed
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Set vars stage 1
         run: |
           export LATEST_UPSTREAM=$(git -c 'versionsort.suffix=-' ls-remote --refs --tags --sort='v:refname' git://git.openwrt.org/openwrt/openwrt.git | cut -d'/' -f3 | tail -n 1)
