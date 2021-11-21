@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
     inputs:
       tag-suffix:
-        description: Tag suffix; defaults to "-x86-64"
+        description: Version tag suffix
         required: true
         default: '-x86-64'
   schedule:
