@@ -20,7 +20,7 @@ jobs:
       - name: Set vars stage 1
         run: |
           export LATEST_UPSTREAM=$(git -c 'versionsort.suffix=-' ls-remote -q --refs --tags --sort='v:refname' git://git.openwrt.org/openwrt/openwrt.git | cut -d'/' -f3 | tail -n 1)
-          export TAG_TO_CREATE="${LATEST_UPSTREAM}-${{ github.event.inputs.environment }}"
+          export TAG_TO_CREATE="${LATEST_UPSTREAM}-${{ github.event.inputs.tag-suffix }}"
           echo "tag_to_create=${TAG_TO_CREATE}" >> $GITHUB_ENV
           echo create_tag=$(git -c 'versionsort.suffix=-' ls-remote -q --refs --tags | grep -q ${TAG_TO_CREATE}\$; echo $?) >> $GITHUB_ENV
       - name: Create tag for x86-64
