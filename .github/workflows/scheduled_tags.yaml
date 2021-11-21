@@ -1,7 +1,12 @@
 on:
   workflow_dispatch:
+    inputs:
+      tag-suffix:
+        description: Tag suffix; defaults to "-x86-64"
+        required: true
+        default: '-x86-64'
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '* * * * *'
 
 name: Create tag, if needed
 
@@ -15,8 +20,9 @@ jobs:
       - name: Set vars stage 1
         run: |
           export LATEST_UPSTREAM=$(git -c 'versionsort.suffix=-' ls-remote -q --refs --tags --sort='v:refname' git://git.openwrt.org/openwrt/openwrt.git | cut -d'/' -f3 | tail -n 1)
-          echo "latest_upstreamn=${LATEST_UPSTREAM}" >> $GITHUB_ENV
-          echo create_tag=$(sh -c "(git -c 'versionsort.suffix=-' ls-remote -q --refs --tags | grep ${LATEST_UPSTREAM}); echo $?") >> $GITHUB_ENV
+          export TAG_TO_CREATE="${LATEST_UPSTREAM}-${{ github.event.inputs.environment }}"
+          echo "tag_to_create=${TAG_TO_CREATE}" >> $GITHUB_ENV
+          echo create_tag=$(git -c 'versionsort.suffix=-' ls-remote -q --refs --tags | grep -q ${TAG_TO_CREATE}\$; echo $?) >> $GITHUB_ENV
       - name: Create tag for x86-64
         if: ${{ env.create_tag == '1' }}
         uses: actions/github-script@v3
@@ -26,6 +32,6 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ env.latest_upstream }}-x86-64",
+              ref: "refs/tags/${{ env.tag_to_create }}",
               sha: context.sha
             })
