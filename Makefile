@@ -95,6 +95,12 @@ qemu_packages = \
 	qemu-img \
 	qemu-x86_64-softmmu
 
+# See: https://openwrt.org/docs/guide-user/virtualization/docker_host
+docker_packages = \
+	docker \
+	dockerd \
+	luci-app-dockerman
+
 .PHONY: all
 all: install-deps get-builder build
 
@@ -112,6 +118,6 @@ get-builder:
 build:
 	rm -rf $(build_dir) && mkdir $(build_dir)
 	tar -xf $(builder_filename) -C $(build_dir) --strip-components=1
-	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(qemu_packages)"
+	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(qemu_packages) $(docker_packages)"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
