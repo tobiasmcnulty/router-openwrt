@@ -35,6 +35,7 @@ router_packages = \
 	diffutils \
 	ethtool \
 	iperf \
+	keepalived \
 	kmod-bonding \
 	luci \
 	luci-app-adblock \
