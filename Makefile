@@ -85,6 +85,16 @@ apu2_packages = \
 	irqbalance \
 	fstrim
 
+# See: https://openwrt.org/docs/guide-user/virtualization/qemu_host
+qemu_packages = \
+	fdisk \
+	kmod-kvm-amd \
+	kmod-kvm-intel \
+	kmod-tun \
+	qemu-bridge-helper \
+	qemu-img \
+	qemu-x86_64-softmmu
+
 .PHONY: all
 all: install-deps get-builder build
 
@@ -102,6 +112,6 @@ get-builder:
 build:
 	rm -rf $(build_dir) && mkdir $(build_dir)
 	tar -xf $(builder_filename) -C $(build_dir) --strip-components=1
-	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages)"
+	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(qemu_packages)"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
