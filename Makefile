@@ -1,4 +1,4 @@
-release ?= 21.02.0
+release ?= 21.02.1
 target ?= x86
 subtarget ?= 64
 builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.xz
@@ -102,23 +102,34 @@ docker_packages = \
 	luci-app-dockerman
 
 .PHONY: all
-all: install-deps get-builder build
+all: deps builder build_dir image
 
-install-deps:
+deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
 	sudo apt-get update
 	sudo apt-get install -y build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python
 
-get-builder:
+builder:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#obtaining_the_image_builder
 	wget -q $(builder_url) -O $(builder_filename)
 	wget -q $(checksums_url) -O sha256sums
 	grep $(builder_filename) sha256sums | sha256sum --check --status
 
-build:
+build_dir:
 	rm -rf $(build_dir) && mkdir $(build_dir)
 	tar -xf $(builder_filename) -C $(build_dir) --strip-components=1
-	# qemu_packages removed to save space; re-add if needed
-	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(docker_packages)"
+
+image:
+	sed -i 's/CONFIG_TARGET_ROOTFS_PARTSIZE=.\+/CONFIG_TARGET_ROOTFS_PARTSIZE=1024/' $(build_dir)/.config
+	cd $(build_dir) && make image \
+		PROFILE=$(build_profile) \
+		PACKAGES=" \
+			$(router_packages) \
+			$(release_packages) \
+			$(wifi_packages) \
+			$(apu2_packages) \
+			$(qemu_packages) \
+			$(docker_packages) \
+			"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
