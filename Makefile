@@ -118,6 +118,7 @@ get-builder:
 build:
 	rm -rf $(build_dir) && mkdir $(build_dir)
 	tar -xf $(builder_filename) -C $(build_dir) --strip-components=1
-	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(qemu_packages) $(docker_packages)"
+	# qemu_packages removed to save space; re-add if needed
+	cd $(build_dir) && make image PROFILE=$(build_profile) PACKAGES="$(router_packages) $(release_packages) $(wifi_packages) $(apu2_packages) $(docker_packages)"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
