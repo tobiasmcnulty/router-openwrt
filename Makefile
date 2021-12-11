@@ -67,6 +67,11 @@ wifi_packages = \
 	wireless-regdb \
 	wpa-supplicant
 
+ipsec_packages = \
+	strongswan-full \
+	kmod-xfrm-interface \
+	kmod-crypto-gcm
+
 # See: https://openwrt.org/toh/pcengines/apu2
 # - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
 apu2_packages = \
@@ -127,9 +132,9 @@ image:
 			$(router_packages) \
 			$(release_packages) \
 			$(wifi_packages) \
+			$(ipsec_packages) \
 			$(apu2_packages) \
 			$(qemu_packages) \
-			$(docker_packages) \
 			"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
