@@ -69,8 +69,9 @@ wifi_packages = \
 
 ipsec_packages = \
 	strongswan-full \
+	kmod-crypto-gcm \
 	kmod-xfrm-interface \
-	kmod-crypto-gcm
+	xfrm
 
 # See: https://openwrt.org/toh/pcengines/apu2
 # - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
