@@ -1,24 +1,10 @@
-release ?= 21.02.1
+release ?= 21.02.3
 target ?= x86
 subtarget ?= 64
 build_profile ?= generic
 builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.xz
 builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
-
-# release-dependent variables
-# 21.02.0 seems to have wolfssl installed by default or as a dependency of other packages
-ifneq (,$(findstring 21.,$(release)))
-	release_packages = \
-		kmod-sp5100-tco \
-		libustream-wolfssl20201210 \
-		unbound-daemon
-else
-	release_packages = \
-		kmod-sp5100_tco \
-		libustream-openssl20150806 \
-		unbound-daemon-heavy
-endif
 
 build_dir = builder-$(release)-$(target)-$(subtarget)
 
@@ -36,6 +22,7 @@ router_packages = \
 	iperf \
 	keepalived \
 	kmod-bonding \
+	libustream-wolfssl20201210 \
 	luci \
 	luci-app-adblock \
 	luci-app-ddns \
@@ -54,6 +41,7 @@ router_packages = \
 	rsyslog \
 	screen \
 	tcpdump \
+	unbound-daemon \
 	whois
 
 wifi_packages = \
@@ -74,7 +62,6 @@ ipsec_packages = \
 
 ifeq ($(target), "x86")
 	# See: https://openwrt.org/toh/pcengines/apu2
-	# - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
 	apu2_packages = \
 		kmod-leds-gpio \
 		kmod-crypto-hw-ccp \
@@ -85,6 +72,7 @@ ifeq ($(target), "x86")
 		kmod-usb2 \
 		kmod-usb3 \
 		kmod-sound-core \
+		kmod-sp5100-tco \
 		kmod-pcspkr \
 		amd64-microcode \
 		flashrom \
@@ -135,7 +123,6 @@ image:
 		PROFILE=$(build_profile) \
 		PACKAGES=" \
 			$(router_packages) \
-			$(release_packages) \
 			$(wifi_packages) \
 			$(ipsec_packages) \
 			$(apu2_packages) \
