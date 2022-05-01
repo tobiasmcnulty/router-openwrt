@@ -72,33 +72,38 @@ ipsec_packages = \
 	kmod-xfrm-interface \
 	xfrm
 
-# See: https://openwrt.org/toh/pcengines/apu2
-# - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
-apu2_packages = \
-	kmod-leds-gpio \
-	kmod-crypto-hw-ccp \
-	kmod-gpio-nct5104d \
-	kmod-gpio-button-hotplug \
-	kmod-usb-core \
-	kmod-usb-ohci \
-	kmod-usb2 \
-	kmod-usb3 \
-	kmod-sound-core \
-	kmod-pcspkr \
-	amd64-microcode \
-	flashrom \
-	irqbalance \
-	fstrim
+ifeq ($(target), "x86")
+	# See: https://openwrt.org/toh/pcengines/apu2
+	# - kmod-sp5100-tco is in release_packages due to name change in 21.02.0
+	apu2_packages = \
+		kmod-leds-gpio \
+		kmod-crypto-hw-ccp \
+		kmod-gpio-nct5104d \
+		kmod-gpio-button-hotplug \
+		kmod-usb-core \
+		kmod-usb-ohci \
+		kmod-usb2 \
+		kmod-usb3 \
+		kmod-sound-core \
+		kmod-pcspkr \
+		amd64-microcode \
+		flashrom \
+		irqbalance \
+		fstrim
 
-# See: https://openwrt.org/docs/guide-user/virtualization/qemu_host
-qemu_packages = \
-	fdisk \
-	kmod-kvm-amd \
-	kmod-kvm-intel \
-	kmod-tun \
-	qemu-bridge-helper \
-	qemu-img \
-	qemu-x86_64-softmmu
+	# See: https://openwrt.org/docs/guide-user/virtualization/qemu_host
+	qemu_packages = \
+		fdisk \
+		kmod-kvm-amd \
+		kmod-kvm-intel \
+		kmod-tun \
+		qemu-bridge-helper \
+		qemu-img \
+		qemu-x86_64-softmmu
+else
+	apu2_packages = ""
+	qemu_packages = ""
+endif
 
 # See: https://openwrt.org/docs/guide-user/virtualization/docker_host
 docker_packages = \
