@@ -20,7 +20,7 @@ jobs:
           echo "release=$(echo $TAG | cut -d'-' -f1)"  >> $GITHUB_ENV
           echo "target=$(echo $TAG | cut -d'-' -f2)" >> $GITHUB_ENV
           echo "subtarget=$(echo $TAG | cut -d'-' -f3)" >> $GITHUB_ENV
-          echo "build_profile=$(echo $TAG | cut -d'-' -f4)" >> $GITHUB_ENV
+          echo "build_profile=$(echo $TAG | cut -d'-' -f4,5,6,7,8,9,10)" >> $GITHUB_ENV
       - name: Set vars stage 2 (OpenWRT 19.x)
         run: |
           echo "target_dir=./builder-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
