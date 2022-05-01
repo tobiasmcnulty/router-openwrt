@@ -1,6 +1,7 @@
 release ?= 21.02.1
 target ?= x86
 subtarget ?= 64
+build_profile ?= generic
 builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.xz
 builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
@@ -8,13 +9,11 @@ checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(targ
 # release-dependent variables
 # 21.02.0 seems to have wolfssl installed by default or as a dependency of other packages
 ifneq (,$(findstring 21.,$(release)))
-	build_profile = generic
 	release_packages = \
 		kmod-sp5100-tco \
 		libustream-wolfssl20201210 \
 		unbound-daemon
 else
-	build_profile = Generic
 	release_packages = \
 		kmod-sp5100_tco \
 		libustream-openssl20150806 \
