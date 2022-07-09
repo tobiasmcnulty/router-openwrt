@@ -22,6 +22,7 @@ router_packages = \
 	iperf \
 	keepalived \
 	kmod-bonding \
+	kmod-usb-net-rtl8152 \
 	libustream-wolfssl20201210 \
 	luci \
 	luci-app-adblock \
