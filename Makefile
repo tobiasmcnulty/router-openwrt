@@ -19,6 +19,8 @@ router_packages = \
 	ddns-scripts \
 	diffutils \
 	ethtool \
+	grub2 \
+	grub2-efi \
 	iperf \
 	keepalived \
 	kmod-bonding \
