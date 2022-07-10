@@ -22,6 +22,7 @@ router_packages = \
 	iperf \
 	keepalived \
 	kmod-bonding \
+	kmod-fs-vfat \
 	kmod-usb-net-rtl8152 \
 	libustream-wolfssl20201210 \
 	luci \
