@@ -101,7 +101,7 @@ docker_packages = \
 	luci-app-dockerman
 
 .PHONY: all
-all: deps builder build_dir image
+all: deps builder build_dir image no_serial
 
 deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
@@ -131,3 +131,7 @@ image:
 			"
 	du -hs $(build_dir)/bin/targets/$(target)/$(subtarget)/*
 	cat $(build_dir)/bin/targets/$(target)/$(subtarget)/sha256sums
+
+no_serial:
+	./generate-no-serial-images.sh $(build_dir)/bin/targets/$(target)/$(subtarget)/*combined.img.gz $(build_dir)/bin/targets/$(target)/$(subtarget)/*combined-efi.img.gz
+	cd $(build_dir)/bin/targets/$(target)/$(subtarget)/ && sha256sum -b *no-serial.img.gz >> sha256sums
