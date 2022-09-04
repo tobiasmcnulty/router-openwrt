@@ -17,10 +17,10 @@ jobs:
       - name: Set vars stage 1
         run: |
           export TAG=$(echo ${{ github.ref }} | cut -d'/' -f3)
-          echo "release=$(echo $TAG | cut -d'-' -f1)"  >> $GITHUB_ENV
-          echo "target=$(echo $TAG | cut -d'-' -f2)" >> $GITHUB_ENV
-          echo "subtarget=$(echo $TAG | cut -d'-' -f3)" >> $GITHUB_ENV
-          echo "build_profile=$(echo $TAG | cut -d'-' -f4,5,6,7,8,9,10)" >> $GITHUB_ENV
+          echo "release=$(echo $TAG | cut -d'_' -f1)"  >> $GITHUB_ENV
+          echo "target=$(echo $TAG | cut -d'_' -f2)" >> $GITHUB_ENV
+          echo "subtarget=$(echo $TAG | cut -d'_' -f3)" >> $GITHUB_ENV
+          echo "build_profile=$(echo $TAG | cut -d'_' -f4,5,6,7,8,9,10)" >> $GITHUB_ENV
       - name: Set vars stage 2
         run: |
           echo "target_dir=./builder-${{ env.release }}-${{ env.target }}-${{ env.subtarget }}/bin/targets/${{ env.target }}/${{ env.subtarget }}" >> $GITHUB_ENV
