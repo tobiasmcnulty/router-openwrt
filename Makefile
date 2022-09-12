@@ -19,8 +19,6 @@ router_packages = \
 	ddns-scripts \
 	diffutils \
 	ethtool \
-	grub2 \
-	grub2-efi \
 	iperf \
 	keepalived \
 	kmod-bonding \
@@ -67,6 +65,8 @@ ipsec_packages = \
 ifeq ($(target), "x86")
 	# See: https://openwrt.org/toh/pcengines/apu2
 	apu2_packages = \
+		grub2 \
+		grub2-efi \
 		kmod-leds-gpio \
 		kmod-crypto-hw-ccp \
 		kmod-gpio-nct5104d \
