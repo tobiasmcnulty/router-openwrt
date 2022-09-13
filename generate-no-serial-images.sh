@@ -11,7 +11,6 @@ unmount () {
 # always umount & detach loopback device in case of error
 trap unmount ERR
 
-shopt -s nullglob
 for image in "$@"; do
     gunzip --force --keep $image || true
 
