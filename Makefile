@@ -92,9 +92,11 @@ ifeq ($(target), "x86")
 		qemu-bridge-helper \
 		qemu-img \
 		qemu-x86_64-softmmu
+	all: deps builder build_dir image no_serial
 else
 	apu2_packages = ""
 	qemu_packages = ""
+	all: deps builder build_dir image
 endif
 
 # See: https://openwrt.org/docs/guide-user/virtualization/docker_host
@@ -104,7 +106,6 @@ docker_packages = \
 	luci-app-dockerman
 
 .PHONY: all
-all: deps builder build_dir image no_serial
 
 deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
