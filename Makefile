@@ -92,9 +92,11 @@ ifeq ($(target), "x86")
 		qemu-bridge-helper \
 		qemu-img \
 		qemu-x86_64-softmmu
+	all: deps builder build_dir image no_serial
 else
 	apu2_packages = ""
 	qemu_packages = ""
+	all: deps builder build_dir image
 endif
 
 # See: https://openwrt.org/docs/guide-user/virtualization/docker_host
