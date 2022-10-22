@@ -106,11 +106,6 @@ docker_packages = \
 	luci-app-dockerman
 
 .PHONY: all
-ifeq ($(target), "x86")
-all: deps builder build_dir image no_serial
-else
-all: deps builder build_dir image
-endif
 
 deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
