@@ -10,7 +10,7 @@ jobs:
   # https://github.com/actions/upload-release-asset#example-workflow---upload-a-release-asset
   build:
     name: Upload Release Asset
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
