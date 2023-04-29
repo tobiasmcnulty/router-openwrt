@@ -40,6 +40,7 @@ router_packages = \
 	python3-ctypes \
 	python3-light \
 	python3-logging \
+	qrencode \
 	rsyslog \
 	screen \
 	tcpdump \
