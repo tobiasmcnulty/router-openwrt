@@ -1,4 +1,4 @@
-release ?= 21.02.3
+release ?= 23.05.2
 target ?= x86
 subtarget ?= 64
 build_profile ?= generic
@@ -24,7 +24,6 @@ router_packages = \
 	kmod-bonding \
 	kmod-fs-vfat \
 	kmod-usb-net-rtl8152 \
-	libustream-wolfssl20201210 \
 	luci \
 	luci-app-adblock \
 	luci-app-ddns \
