@@ -28,11 +28,13 @@ router_packages = \
 	luci-app-adblock \
 	luci-app-ddns \
 	luci-app-openvpn \
+	luci-app-mwan3 \
 	luci-app-unbound \
 	luci-app-vpn-policy-routing \
 	luci-app-wireguard \
 	luci-proto-wireguard \
 	mii-tool \
+	mwan3 \
 	nmap \
 	openvpn-openssl \
 	pciutils \
