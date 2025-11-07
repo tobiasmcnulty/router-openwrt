@@ -115,7 +115,7 @@ endif
 deps:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#debianubuntu
 	sudo apt-get update
-	sudo apt-get install -y build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python
+	sudo apt-get install -y build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python3
 
 builder:
 	# https://openwrt.org/docs/guide-user/additional-software/imagebuilder#obtaining_the_image_builder
