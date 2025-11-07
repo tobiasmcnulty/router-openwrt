@@ -1,8 +1,8 @@
-release ?= 23.05.2
+release ?= 24.10.4
 target ?= x86
 subtarget ?= 64
 build_profile ?= generic
-builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.xz
+builder_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/openwrt-imagebuilder-$(release)-$(target)-$(subtarget).Linux-x86_64.tar.zst
 builder_filename = $(notdir $(builder_url))
 checksums_url = https://downloads.openwrt.org/releases/$(release)/targets/$(target)/$(subtarget)/sha256sums
 
