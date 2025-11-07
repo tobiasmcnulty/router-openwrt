@@ -30,8 +30,6 @@ router_packages = \
 	luci-app-openvpn \
 	luci-app-mwan3 \
 	luci-app-unbound \
-	luci-app-vpn-policy-routing \
-	luci-app-wireguard \
 	luci-proto-wireguard \
 	mii-tool \
 	mwan3 \
@@ -59,7 +57,7 @@ wifi_packages = \
 	wpa-supplicant
 
 ipsec_packages = \
-	strongswan-full \
+	strongswan \
 	kmod-crypto-gcm \
 	kmod-xfrm-interface \
 	xfrm
